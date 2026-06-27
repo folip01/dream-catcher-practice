@@ -1,16 +1,15 @@
 import OpenAI from 'openai';
-
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: 'https://api.groq.com/openai/v1'
-});
+  apiKey: process.env.OPENAI_API_KEY
+  });
 
+// Call OpenAI API for dream interpretation
 export async function getDreamInterpretation(dreamText) {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error('Server misconfigured: OPENAI_API_KEY is missing');
   }
 
-  const model = process.env.OPENAI_MODEL || 'llama-3.3-70b-versatile';
+  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
   try {
     const message = await openai.chat.completions.create({
@@ -29,7 +28,7 @@ export async function getDreamInterpretation(dreamText) {
     });
     return message.choices[0].message.content.trim();
   } catch (error) {
-    console.error('Groq API error:', error);
+    console.error('OpenAI API error:', error);
     throw new Error(`API error: ${error.message}`);
   }
 }
